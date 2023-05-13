@@ -1,0 +1,16 @@
+{
+  "name": "testes",
+  "version": "1.0.0",
+  "description": "Testes automatizados com cypress",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run cypress:run",
+    "cypress": "cypress open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Felipe Dantas do nascimento",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^12.12.0"
+  }
+}
