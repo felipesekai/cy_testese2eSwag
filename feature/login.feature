@@ -15,3 +15,11 @@ Feature: login into site Etrium
         And I click the login button
         Then I must see an error message stating that my credentials are incorrect
         And I must stay on the login page
+# Incorrect Email scenario
+   Scenario: Login with wrong email
+        Given I'm on the login page
+        When I fill my email incorrect
+        And  My password 
+        And I click the login button
+        Then I must see an error message stating that my credentials are incorrect
+        And I must stay on the login page
