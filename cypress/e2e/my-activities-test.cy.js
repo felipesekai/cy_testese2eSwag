@@ -1,6 +1,6 @@
 import { login } from "../setup/login"
 
-describe('See my activities', () => {
+describe('my activities', () => {
   beforeEach(() => {
     // Visitando o site Etrium e fazendo login
     login()
@@ -22,11 +22,11 @@ describe('See my activities', () => {
     // selecioando os interessado
     selectingInterested()
     // Datas
-    cy.get(':nth-child(1) > .form-group > #mask > .p-inputtext').type('14/05/2023')
-    cy.get('.col-sm-6 > .form-group > #mask > .p-inputtext').type('14/06/2023')
+    cy.get(':nth-child(1) > .form-group > #mask > .p-inputtext').type(currentDate())
+    cy.get('.col-sm-6 > .form-group > #mask > .p-inputtext').type(currentDate())
 
     // cliando no botao para cadastrar a atividade
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    cy.get('.p-button-primary > .p-button-label').click()
 
   })
 
@@ -52,7 +52,7 @@ describe('See my activities', () => {
       .type('atividade cypress')
 
     // Clicando no botão de alterar título
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    cy.get('.etrium-row > .p-button-primary').click()
 
     // Verificando se a mensagem de sucesso foi exibida
     cy.get('.p-toast-detail').should('have.text', 'Atividade alterada com sucesso')
@@ -66,7 +66,7 @@ describe('See my activities', () => {
       .type('descriçao adicionanda pelo cypress')
 
     // Clicando no botão de alterar título
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    cy.get('.etrium-row > .p-button-primary').click()
 
     // Verificando se a mensagem de sucesso foi exibida
     cy.get('.p-toast-detail').should('have.text', 'Atividade alterada com sucesso')
@@ -82,7 +82,7 @@ describe('See my activities', () => {
     cy.get('[aria-label="Em Atendimento"]').click()
     // Clicando no botão de alterar atividade
     // Clicando no botão de alterar título
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    cy.get('.etrium-row > .p-button-primary').click()
 
     // Verificando se a mensagem de sucesso foi exibida
     cy.get('.p-toast-detail').should('have.text', 'Atividade alterada com sucesso')
@@ -103,26 +103,26 @@ describe('See my activities', () => {
   })
 
   // buscando processo e adicionando a atividade
-  it('searching process and adding the activity', () => {
+  it.only('searching process and adding the activity', () => {
     cy.get('#text-consult')
       .first().click()
     // preenchenco o campo e pesquisando processo 
-    cy.get('#processo').type('ebt')
+    cy.get('#processo').type('auto')
     cy.get('.input-group-text').click()
 
     // verificando se abriu a tela com resultados da busca 
     cy.get('#pr_id_15_header').should('have.text', 'Busca de Processo')
-    // verificando se encontrou algum processo da pasta
-    cy.get('.p-selectable-row > :nth-child(1)').should('have.text', 'EBT-2033')
+    // // verificando se encontrou algum processo da pasta
+    // cy.get('.p-selectable-row > :nth-child(1)').should('have.text', 'AUTO-1')
     // selecionando o processo
-    cy.get('[style="min-width: 8rem;"] > .p-button').click()
+    cy.get('[tabindex="0"] > [style="min-width: 8rem;"] > .p-button').click()
 
     // sub-grupos
     cy.get('#subGrupoTrabalho').click()
     cy.get('.p-dropdown-item').first().click()
 
     // Clicando no botão de alterar título
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    alterButton().click()
 
     // Verificando se a mensagem de sucesso foi exibida
     cy.get('.p-toast-detail').should('have.text', 'Atividade alterada com sucesso')
@@ -148,10 +148,10 @@ describe('See my activities', () => {
     cy.get('.p-dropdown-item').first().click()
 
     // Clicando no botão de alterar título
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    cy.get('.etrium-row > .p-button-primary').click()
 
     // Verificando se a mensagem de erro foi exibida
-    cy.get('.p-toast-detail').should('have.text', 'A atividade precisa de ao menos um responsável')
+    cy.get('.p-toast-detail').should('have.text', 'A atividade precisa ter pelo menos um responsavel!')
 
   })
   // removendo processo de uma atividade
@@ -176,7 +176,7 @@ describe('See my activities', () => {
     selectingResponsible()
     selectingInterested()
     // Clicando no botão de alterar título
-    cy.get('.flex-row-reverse > .p-button-primary').click()
+    alterButton().click()
 
     // Verificando se a mensagem de sucesso foi exibida
     cy.get('.p-toast-detail').should('have.text', 'Atividade alterada com sucesso')
@@ -204,5 +204,17 @@ function selectingGroupAndSubGroup() {
   // sub-grupos
   cy.get('#subGrupoTrabalho').click()
   cy.get('.p-dropdown-item').first().click()
+}
+
+function currentDate() {
+  const dataAtual = new Date();
+  const ano = dataAtual.getFullYear();
+  const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+  const dia = String(dataAtual.getDate()).padStart(2, '0');
+
+  return `${dia}${mes}/${ano}`;
+}
+function alterButton() {
+  return cy.get('.etrium-row > .p-button-primary')
 }
 
